@@ -1,0 +1,31 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.lanou.domain.Item">
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        <property name="name"/>
+
+        <!--双向n-n关联
+        set
+            table: 中间表的表名, 需要保持两个set集合中的中间表名一致
+            inverse: 两个set集合中任意选一个为 true, 即放弃主动维护关系
+        key: 标签中的column: 对应另一个set中的<many-to-many>标签中的column
+        many-to-many标签中的column: 对应另一个set中的<key>标签中的column
+        <key> 和<many-to-many>标签中的column会再中间表生成索引列, 值对应的是两个主键id
+        -->
+        <set name="categories"
+             inverse="false"
+             cascade="save-update"
+             table="Category_Item">
+            <key column="item_id"/>
+            <many-to-many class="com.lanou.domain.Category"
+                          column="category_id"/>
+        </set>
+    </class>
+
+
+</hibernate-mapping>

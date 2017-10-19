@@ -1,0 +1,28 @@
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.lanou.domain.Category">
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        <property name="name"/>
+
+        <!-- n-n 单向关系配置:
+                    name: 对应的属性名称
+                    table: 中间表名称
+                    cascade: 级联关系
+        -->
+        <set name="items" table="Category_Item" cascade="save-update">
+            <!--当前表在中间表中生成的索引列-->
+            <key column="category_id"/>
+
+            <!-- n-n关系定义对方的类路径
+                    class: 指定对方的类路径
+                    column: 对方表主键在中间表生成的索引列
+            -->
+            <many-to-many class="com.lanou.domain.Item" column="item_id"/>
+        </set>
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD//EN"
+    "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <property name="connection.url">jdbc:mysql://localhost:3306/hi0703</property>
+    <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="connection.username">root</property>
+    <property name="connection.password">123456</property>
+
+    <!--可选配置-->
+    <property name="hibernate.hbm2ddl.auto">update</property>
+    <property name="hibernate.show_sql">true</property>
+    <property name="hibernate.format_sql">true</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+    <!--如果使用getCurrentSession的方式获得session对象, 需要下列属性配置-->
+    <property name="hibernate.current_session_context_class">thread</property>
+
+    <!--二级缓存配置-->
+    <!--1. 开启二级缓存-->
+    <property name="cache.use_second_level_cache">true</property>
+    <!--2. 配置二级缓存的提供商, 没有提示,手打-->
+    <property name="cache.region.factory_class">
+      org.hibernate.cache.ehcache.EhCacheRegionFactory
+    </property>
+
+    <!--打开缓存的统计机制-->
+    <property name="hibernate.generate_statistics">true</property>
+
+
+    <!--加载映射文件-->
+    <mapping resource="resources/Item.hbm.xml"/>
+    <mapping resource="resources/Category.hbm.xml"/>
+
+    <!--3. 配置需要使用二级缓存的对象, 必须放在 mapping 之后 -->
+    <class-cache class="com.lanou.domain.Item" usage="read-only"/>
+    <class-cache class="com.lanou.domain.Category" usage="read-only"/>
+
+  </session-factory>
+</hibernate-configuration>
